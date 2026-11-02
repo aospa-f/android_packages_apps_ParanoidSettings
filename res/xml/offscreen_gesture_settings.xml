@@ -134,6 +134,8 @@
         android:key="offscreen_gesture_music_apps"
         android:title="@string/offscreen_gesture_music_apps_title"
         android:summary="@string/offscreen_gesture_music_apps_summary"
+        android:positiveButtonText="@android:string/ok"
+        android:negativeButtonText="@android:string/cancel"
         android:persistent="false" />
 
 </PreferenceScreen>
