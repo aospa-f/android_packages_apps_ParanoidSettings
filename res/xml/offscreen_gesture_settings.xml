@@ -129,4 +129,11 @@
         android:summary="%s"
         android:title="@string/gestures_draw_arrow_right" />
 
+
+    <MultiSelectListPreference
+        android:key="offscreen_gesture_music_apps"
+        android:title="@string/offscreen_gesture_music_apps_title"
+        android:summary="@string/offscreen_gesture_music_apps_summary"
+        android:persistent="false" />
+
 </PreferenceScreen>

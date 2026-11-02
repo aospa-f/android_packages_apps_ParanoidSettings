@@ -6,12 +6,18 @@
 package co.aospa.settings.gestures;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.service.media.MediaBrowserService;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
+import android.text.TextUtils;
 
 import androidx.preference.ListPreference;
+import androidx.preference.MultiSelectListPreference;
 
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
@@ -24,7 +30,11 @@ import com.android.settingslib.search.SearchIndexable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 @SearchIndexable
 public class OffscreenGestureSettings extends SettingsPreferenceFragment implements
@@ -44,6 +54,7 @@ public class OffscreenGestureSettings extends SettingsPreferenceFragment impleme
     private static final String KEY_ONE_FINGER_SWIPE_DOWN = "one_finger_swipe_down";
     private static final String KEY_ONE_FINGER_SWIPE_LEFT = "one_finger_swipe_left";
     private static final String KEY_TWO_FINGER_SWIPE = "two_finger_swipe";
+    private static final String KEY_MUSIC_APPS = "offscreen_gesture_music_apps";
 
     private static final HashMap<String, Integer> sGesturesKeyCodes = new HashMap<>();
     private static final HashMap<String, Integer> sGesturesDefaults = new HashMap<>();
@@ -130,6 +141,92 @@ public class OffscreenGestureSettings extends SettingsPreferenceFragment impleme
                 removePreference(gestureKey);
             }
         }
+        setupMusicAppsPreference();
+    }
+
+    private void setupMusicAppsPreference() {
+        MultiSelectListPreference preference = findPreference(KEY_MUSIC_APPS);
+        if (preference == null) {
+            return;
+        }
+
+        final Context context = requireContext();
+        final PackageManager packageManager = context.getPackageManager();
+        final Map<String, String> apps = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+        final Intent browserIntent = new Intent(MediaBrowserService.SERVICE_INTERFACE);
+        for (ResolveInfo info : packageManager.queryIntentServices(
+                browserIntent, PackageManager.MATCH_ALL)) {
+            if (info.serviceInfo == null) {
+                continue;
+            }
+            final String pkg = info.serviceInfo.packageName;
+            if (context.getPackageName().equals(pkg)) {
+                continue;
+            }
+            final CharSequence label = info.serviceInfo.loadLabel(packageManager);
+            apps.put(pkg, label != null ? label.toString() : pkg);
+        }
+
+        final Intent musicIntent = new Intent(Intent.ACTION_VIEW);
+        musicIntent.setType("audio/*");
+        musicIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        for (ResolveInfo info : packageManager.queryIntentActivities(
+                musicIntent, PackageManager.MATCH_ALL)) {
+            if (info.activityInfo == null) {
+                continue;
+            }
+            final String pkg = info.activityInfo.packageName;
+            if (context.getPackageName().equals(pkg)) {
+                continue;
+            }
+            final CharSequence label = info.activityInfo.loadLabel(packageManager);
+            apps.putIfAbsent(pkg, label != null ? label.toString() : pkg);
+        }
+
+        if (apps.isEmpty()) {
+            getPreferenceScreen().removePreference(preference);
+            return;
+        }
+
+        final List<Map.Entry<String, String>> entries = new ArrayList<>(apps.entrySet());
+        entries.sort(Map.Entry.comparingByValue(String.CASE_INSENSITIVE_ORDER));
+        final CharSequence[] labels = new CharSequence[entries.size()];
+        final CharSequence[] values = new CharSequence[entries.size()];
+        for (int i = 0; i < entries.size(); i++) {
+            values[i] = entries.get(i).getKey();
+            labels[i] = entries.get(i).getValue();
+        }
+        preference.setEntries(labels);
+        preference.setEntryValues(values);
+
+        final String stored = Settings.System.getStringForUser(
+                context.getContentResolver(), KEY_MUSIC_APPS, UserHandle.USER_CURRENT);
+        final Set<String> selected = new HashSet<>();
+        if (!TextUtils.isEmpty(stored)) {
+            for (String pkg : stored.split(",")) {
+                if (apps.containsKey(pkg)) {
+                    selected.add(pkg);
+                }
+            }
+        }
+        preference.setValues(selected);
+        updateMusicAppsSummary(preference, selected);
+        preference.setOnPreferenceChangeListener((pref, newValue) -> {
+            @SuppressWarnings("unchecked")
+            final Set<String> selectedValues = (Set<String>) newValue;
+            Settings.System.putStringForUser(context.getContentResolver(), KEY_MUSIC_APPS,
+                    TextUtils.join(",", selectedValues), UserHandle.USER_CURRENT);
+            updateMusicAppsSummary((MultiSelectListPreference) pref, selectedValues);
+            return true;
+        });
+    }
+
+    private void updateMusicAppsSummary(MultiSelectListPreference preference,
+            Set<String> selected) {
+        preference.setSummary(selected.isEmpty()
+                ? getString(R.string.offscreen_gesture_music_apps_all)
+                : getString(R.string.offscreen_gesture_music_apps_selected, selected.size()));
     }
 
     @Override

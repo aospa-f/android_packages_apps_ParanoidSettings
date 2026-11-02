@@ -36,6 +36,8 @@
         <item>@string/gestures_previous_music</item>
         <item>@string/gestures_open_camera</item>
         <item>@string/gestures_open_dialer</item>
+        <item>@string/gestures_volume_up</item>
+        <item>@string/gestures_volume_down</item>
     </string-array>
 
     <string-array name="gestures_values">
@@ -49,6 +51,8 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
+        <item>11</item>
     </string-array>
 
     <string-array name="gestures_entries_ambient">
@@ -123,5 +127,46 @@
         <item>en-US</item>
         <item>es-US</item>
     </array>
+
+
+    <!-- Status bar clock and date -->
+    <string-array name="status_bar_clock_am_pm_entries">
+        <item>Normal</item>
+        <item>Small</item>
+        <item>Hidden</item>
+    </string-array>
+    <string-array name="status_bar_clock_am_pm_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="status_bar_clock_date_display_entries">
+        <item>Hidden</item>
+        <item>Small</item>
+        <item>Normal</item>
+    </string-array>
+    <string-array name="status_bar_clock_date_display_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="status_bar_clock_date_style_entries">
+        <item>Regular</item>
+        <item>Lowercase</item>
+        <item>UPPERCASE</item>
+    </string-array>
+    <string-array name="status_bar_clock_date_style_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="status_bar_clock_date_position_entries">
+        <item>Before time</item>
+        <item>After time</item>
+    </string-array>
+    <string-array name="status_bar_clock_date_position_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
 </resources>

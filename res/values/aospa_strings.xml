@@ -221,4 +221,32 @@
     <string name="wifi_tether_connected_device_unknown_name">Unknown device</string>
     <string name="wifi_tether_connected_device_summary" translatable="false">%1$s \u2022 %2$s</string>
 
+
+    <!-- Status bar clock and date -->
+    <string name="status_bar_clock_title">Clock and date</string>
+    <string name="status_bar_clock_summary">Show seconds, date, AM/PM and styling in the status bar</string>
+    <string name="keywords_status_bar_clock">clock, date, seconds, am/pm, bold, status bar</string>
+    <string name="status_bar_clock_show_seconds_title">Show seconds</string>
+    <string name="status_bar_clock_show_seconds_summary">Show seconds in the status bar clock</string>
+    <string name="status_bar_clock_am_pm_title">AM/PM style</string>
+    <string name="status_bar_clock_date_display_title">Show date</string>
+    <string name="status_bar_clock_date_style_title">Date case</string>
+    <string name="status_bar_clock_date_position_title">Date position</string>
+    <string name="status_bar_clock_date_format_title">Date format</string>
+    <string name="status_bar_clock_date_format_default">EEE</string>
+    <string name="status_bar_clock_date_format_message">Java SimpleDateFormat pattern. Leave empty to use EEE (for example: Mon).</string>
+    <string name="status_bar_clock_bold_title">Bold clock</string>
+    <string name="status_bar_clock_bold_summary">Use a bold typeface for the status bar clock</string>
+    <string name="status_bar_clock_period_separator_title">Period separator</string>
+    <string name="status_bar_clock_period_separator_summary">Replace the colon in the clock with a period</string>
+
+
+    <!-- Screen off music/volume gestures -->
+    <string name="gestures_volume_up">Volume up</string>
+    <string name="gestures_volume_down">Volume down</string>
+    <string name="offscreen_gesture_music_apps_title">Music apps</string>
+    <string name="offscreen_gesture_music_apps_summary">Only respond to music and volume gestures when one of these apps is playing</string>
+    <string name="offscreen_gesture_music_apps_all">All media apps</string>
+    <string name="offscreen_gesture_music_apps_selected">%d selected</string>
+
 </resources>
