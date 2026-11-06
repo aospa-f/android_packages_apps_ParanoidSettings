@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 import androidx.preference.ListPreference;
+import androidx.preference.SeekBarPreference;
 import androidx.preference.MultiSelectListPreference;
 
 import com.android.settings.R;
@@ -142,6 +143,22 @@ public class OffscreenGestureSettings extends SettingsPreferenceFragment impleme
             }
         }
         setupMusicAppsPreference();
+        setupVolumeStepsPreference();
+    }
+
+    private void setupVolumeStepsPreference() {
+        SeekBarPreference preference = findPreference("offscreen_volume_steps");
+        if (preference == null) {
+            return;
+        }
+        int current = Settings.System.getInt(getContentResolver(),
+                "offscreen_volume_steps", 2);
+        preference.setValue(Math.max(1, Math.min(10, current)));
+        preference.setOnPreferenceChangeListener((pref, newValue) -> {
+            Settings.System.putInt(getContentResolver(),
+                    "offscreen_volume_steps", (Integer) newValue);
+            return true;
+        });
     }
 
     private void setupMusicAppsPreference() {

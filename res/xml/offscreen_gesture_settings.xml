@@ -133,6 +133,15 @@
         android:title="@string/gestures_draw_arrow_right" />
 
 
+    <SeekBarPreference
+        android:key="offscreen_volume_steps"
+        android:title="@string/offscreen_volume_steps_title"
+        android:summary="@string/offscreen_volume_steps_summary"
+        android:persistent="false"
+        android:max="10"
+        android:min="1"
+        android:defaultValue="2" />
+
     <MultiSelectListPreference
         android:key="offscreen_gesture_music_apps"
         android:title="@string/offscreen_gesture_music_apps_title"

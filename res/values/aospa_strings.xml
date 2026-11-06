@@ -249,4 +249,6 @@
     <string name="offscreen_gesture_music_apps_all">All media apps</string>
     <string name="offscreen_gesture_music_apps_selected">%d selected</string>
 
+    <string name="offscreen_volume_steps_title">Volume step per gesture</string>
+    <string name="offscreen_volume_steps_summary">How much the volume changes with one screen-off volume gesture (1-10)</string>
 </resources>
