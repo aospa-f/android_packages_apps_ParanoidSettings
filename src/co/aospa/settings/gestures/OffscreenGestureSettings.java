@@ -17,10 +17,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 import androidx.preference.ListPreference;
-import androidx.preference.SeekBarPreference;
 import androidx.preference.MultiSelectListPreference;
 
 import com.android.settings.R;
+import com.android.settings.widget.SeekBarPreference;
 import com.android.settings.SettingsActivity;
 import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
@@ -151,9 +151,11 @@ public class OffscreenGestureSettings extends SettingsPreferenceFragment impleme
         if (preference == null) {
             return;
         }
+        preference.setMin(1);
+        preference.setMax(10);
         int current = Settings.System.getInt(getContentResolver(),
                 "offscreen_volume_steps", 2);
-        preference.setValue(Math.max(1, Math.min(10, current)));
+        preference.setProgress(Math.max(1, Math.min(10, current)));
         preference.setOnPreferenceChangeListener((pref, newValue) -> {
             Settings.System.putInt(getContentResolver(),
                     "offscreen_volume_steps", (Integer) newValue);
